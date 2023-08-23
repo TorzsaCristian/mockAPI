@@ -1,0 +1,29 @@
+{
+  "mockApiApp": {
+    "resource": {
+      "home": {
+        "title": "Resources",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Resource",
+        "createOrEditLabel": "Creeare sau editare Resource",
+        "notFound": "No Resources found"
+      },
+      "created": "A fost creată o nouă entitate Resource cu identificatorul {{ param }}",
+      "updated": "Resource cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Resource cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Resource {{ id }}?"
+      },
+      "detail": {
+        "title": "Resource"
+      },
+      "id": "ID",
+      "name": "Name",
+      "generator": "Generator",
+      "count": "Count",
+      "resourceSchema": "Resource Schema",
+      "endpoints": "Endpoints",
+      "mock": "Mock"
+    }
+  }
+}

@@ -1,13 +1,10 @@
 package com.innovasoftware.mockapi.config.dbmigrations;
 
-import com.innovasoftware.mockapi.config.Constants;
 import com.innovasoftware.mockapi.domain.Authority;
-import com.innovasoftware.mockapi.domain.User;
 import com.innovasoftware.mockapi.security.AuthoritiesConstants;
 import io.mongock.api.annotations.ChangeUnit;
 import io.mongock.api.annotations.Execution;
 import io.mongock.api.annotations.RollbackExecution;
-import java.time.Instant;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 /**

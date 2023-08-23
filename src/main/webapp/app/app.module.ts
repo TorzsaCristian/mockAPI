@@ -40,6 +40,8 @@ import { AppPageTitleStrategy } from './app-page-title-strategy';
     { provide: TitleStrategy, useClass: AppPageTitleStrategy },
   ],
   bootstrap: [MainComponent],
+  declarations: [
+  ],
 })
 export class AppModule {
   constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {

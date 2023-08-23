@@ -1,0 +1,28 @@
+{
+  "mockApiApp": {
+    "endpoint": {
+      "home": {
+        "title": "Endpoints",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Endpoint",
+        "createOrEditLabel": "Create or edit a Endpoint",
+        "notFound": "No Endpoints found"
+      },
+      "created": "A new Endpoint is created with identifier {{ param }}",
+      "updated": "A Endpoint is updated with identifier {{ param }}",
+      "deleted": "A Endpoint is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Endpoint {{ id }}?"
+      },
+      "detail": {
+        "title": "Endpoint"
+      },
+      "id": "ID",
+      "url": "Url",
+      "method": "Method",
+      "enabled": "Enabled",
+      "response": "Response",
+      "resource": "Resource"
+    }
+  }
+}

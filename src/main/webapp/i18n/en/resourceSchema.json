@@ -1,0 +1,27 @@
+{
+  "mockApiApp": {
+    "resourceSchema": {
+      "home": {
+        "title": "Resource Schemas",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Resource Schema",
+        "createOrEditLabel": "Create or edit a Resource Schema",
+        "notFound": "No Resource Schemas found"
+      },
+      "created": "A new Resource Schema is created with identifier {{ param }}",
+      "updated": "A Resource Schema is updated with identifier {{ param }}",
+      "deleted": "A Resource Schema is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Resource Schema {{ id }}?"
+      },
+      "detail": {
+        "title": "Resource Schema"
+      },
+      "id": "ID",
+      "name": "Name",
+      "type": "Type",
+      "fakerMethod": "Faker Method",
+      "resource": "Resource"
+    }
+  }
+}

@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="endpoint">
+      <h2 data-cy="endpointDetailsHeading"><span jhiTranslate="mockApiApp.endpoint.detail.title">Endpoint</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ endpoint.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.endpoint.url">Url</span></dt>
+        <dd>
+          <span>{{ endpoint.url }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.endpoint.method">Method</span></dt>
+        <dd>
+          <span>{{ endpoint.method }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.endpoint.enabled">Enabled</span></dt>
+        <dd>
+          <span>{{ endpoint.enabled }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.endpoint.response">Response</span></dt>
+        <dd>
+          <span>{{ endpoint.response }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.endpoint.resource">Resource</span></dt>
+        <dd>
+          <div *ngIf="endpoint.resource">
+            <a [routerLink]="['/resource', endpoint.resource.id, 'view']">{{ endpoint.resource.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/endpoint', endpoint.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

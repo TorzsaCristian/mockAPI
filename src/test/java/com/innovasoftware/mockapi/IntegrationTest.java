@@ -1,6 +1,5 @@
 package com.innovasoftware.mockapi;
 
-import com.innovasoftware.mockapi.MockApiApp;
 import com.innovasoftware.mockapi.config.AsyncSyncConfiguration;
 import com.innovasoftware.mockapi.config.EmbeddedMongo;
 import com.innovasoftware.mockapi.config.TestSecurityConfiguration;

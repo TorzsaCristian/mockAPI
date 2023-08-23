@@ -1,0 +1,79 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-endpoint-heading" data-cy="EndpointCreateUpdateHeading" jhiTranslate="mockApiApp.endpoint.home.createOrEditLabel">
+        Create or edit a Endpoint
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="text" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mockApiApp.endpoint.url" for="field_url">Url</label>
+          <input type="text" class="form-control" name="url" id="field_url" data-cy="url" formControlName="url" />
+          <div *ngIf="editForm.get('url')!.invalid && (editForm.get('url')!.dirty || editForm.get('url')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('url')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mockApiApp.endpoint.method" for="field_method">Method</label>
+          <input type="text" class="form-control" name="method" id="field_method" data-cy="method" formControlName="method" />
+          <div *ngIf="editForm.get('method')!.invalid && (editForm.get('method')!.dirty || editForm.get('method')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('method')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mockApiApp.endpoint.enabled" for="field_enabled">Enabled</label>
+          <input type="checkbox" class="form-check" name="enabled" id="field_enabled" data-cy="enabled" formControlName="enabled" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mockApiApp.endpoint.response" for="field_response">Response</label>
+          <input type="text" class="form-control" name="response" id="field_response" data-cy="response" formControlName="response" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mockApiApp.endpoint.resource" for="field_resource">Resource</label>
+          <select
+            class="form-control"
+            id="field_resource"
+            data-cy="resource"
+            name="resource"
+            formControlName="resource"
+            [compareWith]="compareResource"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="resourceOption" *ngFor="let resourceOption of resourcesSharedCollection">{{ resourceOption.id }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="mock">
+      <h2 data-cy="mockDetailsHeading"><span jhiTranslate="mockApiApp.mock.detail.title">Mock</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ mock.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.mock.prefix">Prefix</span></dt>
+        <dd>
+          <span>{{ mock.prefix }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.mock.version">Version</span></dt>
+        <dd>
+          <span>{{ mock.version }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/mock', mock.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

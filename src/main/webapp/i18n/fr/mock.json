@@ -1,0 +1,26 @@
+{
+  "mockApiApp": {
+    "mock": {
+      "home": {
+        "title": "Mocks",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Mock",
+        "createOrEditLabel": "Créer ou éditer un Mock",
+        "notFound": "Aucun Mock trouvé"
+      },
+      "created": "Un nouveau Mock a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Mock avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Mock avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Mock {{ id }} ?"
+      },
+      "detail": {
+        "title": "Mock"
+      },
+      "id": "ID",
+      "prefix": "Prefix",
+      "version": "Version",
+      "resources": "Resources"
+    }
+  }
+}

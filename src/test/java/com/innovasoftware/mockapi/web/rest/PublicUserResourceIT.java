@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import com.innovasoftware.mockapi.IntegrationTest;
-import com.innovasoftware.mockapi.config.TestSecurityConfiguration;
 import com.innovasoftware.mockapi.domain.User;
 import com.innovasoftware.mockapi.repository.UserRepository;
 import com.innovasoftware.mockapi.security.AuthoritiesConstants;

@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="resourceSchema">
+      <h2 data-cy="resourceSchemaDetailsHeading"><span jhiTranslate="mockApiApp.resourceSchema.detail.title">Resource Schema</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ resourceSchema.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.resourceSchema.name">Name</span></dt>
+        <dd>
+          <span>{{ resourceSchema.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.resourceSchema.type">Type</span></dt>
+        <dd>
+          <span>{{ resourceSchema.type }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.resourceSchema.fakerMethod">Faker Method</span></dt>
+        <dd>
+          <span>{{ resourceSchema.fakerMethod }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.resourceSchema.resource">Resource</span></dt>
+        <dd>
+          <div *ngIf="resourceSchema.resource">
+            <a [routerLink]="['/resource', resourceSchema.resource.id, 'view']">{{ resourceSchema.resource.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/resource-schema', resourceSchema.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

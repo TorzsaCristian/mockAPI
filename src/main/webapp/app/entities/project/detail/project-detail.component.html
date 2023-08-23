@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="project">
+      <h2 data-cy="projectDetailsHeading"><span jhiTranslate="mockApiApp.project.detail.title">Project</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ project.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.project.resourceTreeId">Resource Tree Id</span></dt>
+        <dd>
+          <span>{{ project.resourceTreeId }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.project.name">Name</span></dt>
+        <dd>
+          <span>{{ project.name }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.project.prefix">Prefix</span></dt>
+        <dd>
+          <span>{{ project.prefix }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.project.isPublic">Is Public</span></dt>
+        <dd>
+          <span>{{ project.isPublic }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.project.createdAt">Created At</span></dt>
+        <dd>
+          <span>{{ project.createdAt | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.project.owner">Owner</span></dt>
+        <dd>
+          <span>{{ project.owner?.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="mockApiApp.project.collaborators">Collaborators</span></dt>
+        <dd>
+          <span *ngFor="let collaborators of project.collaborators; let last = last"> {{ collaborators.id }}{{ last ? '' : ', ' }} </span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/project', project.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

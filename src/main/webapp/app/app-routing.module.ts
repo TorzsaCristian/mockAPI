@@ -9,6 +9,7 @@ import HomeComponent from './home/home.component';
 import NavbarComponent from './layouts/navbar/navbar.component';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
+import {ProjectListComponent} from "./project-list/project-list.component";
 
 @NgModule({
   imports: [
@@ -23,6 +24,10 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
           path: '',
           component: NavbarComponent,
           outlet: 'navbar',
+        },
+        {
+          path: 'projects',
+          component: ProjectListComponent,
         },
         {
           path: 'admin',

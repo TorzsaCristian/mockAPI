@@ -10,6 +10,11 @@
         "bankAccount": "ContBancar",
         "label": "Etichetă",
         "operation": "Operație",
+        "mock": "Mock",
+        "resourceSchema": "Resource Schema",
+        "project": "Project",
+        "endpoint": "Endpoint",
+        "resource": "Resource",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

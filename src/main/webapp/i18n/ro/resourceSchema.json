@@ -1,0 +1,27 @@
+{
+  "mockApiApp": {
+    "resourceSchema": {
+      "home": {
+        "title": "Resource Schemas",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Resource Schema",
+        "createOrEditLabel": "Creeare sau editare Resource Schema",
+        "notFound": "No Resource Schemas found"
+      },
+      "created": "A fost creată o nouă entitate Resource Schema cu identificatorul {{ param }}",
+      "updated": "Resource Schema cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Resource Schema cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Resource Schema {{ id }}?"
+      },
+      "detail": {
+        "title": "Resource Schema"
+      },
+      "id": "ID",
+      "name": "Name",
+      "type": "Type",
+      "fakerMethod": "Faker Method",
+      "resource": "Resource"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "mockApiApp": {
+    "endpoint": {
+      "home": {
+        "title": "Endpoints",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Creeare o nouă entitate Endpoint",
+        "createOrEditLabel": "Creeare sau editare Endpoint",
+        "notFound": "No Endpoints found"
+      },
+      "created": "A fost creată o nouă entitate Endpoint cu identificatorul {{ param }}",
+      "updated": "Endpoint cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Endpoint cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Endpoint {{ id }}?"
+      },
+      "detail": {
+        "title": "Endpoint"
+      },
+      "id": "ID",
+      "url": "Url",
+      "method": "Method",
+      "enabled": "Enabled",
+      "response": "Response",
+      "resource": "Resource"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+entity Mock {
+  prefix String,
+  version Integer
+}
+
+entity Resource {
+  name String required,
+  generator String,
+  count Integer
+}
+
+entity ResourceSchema {
+  name String required,
+  type String required,
+  fakerMethod String
+}
+
+entity Endpoint {
+  url String required,
+  method String required,
+  enabled Boolean,
+  response String
+}
+
+entity Project {
+  resourceTreeId String,
+  name String required,
+  prefix String,
+  isPublic Boolean,
+  createdAt ZonedDateTime
+}
+
+relationship OneToMany {
+  Mock{resources} to Resource
+}
+
+relationship OneToMany {
+  Resource{resourceSchema} to ResourceSchema
+}
+
+relationship OneToMany {
+  Resource{endpoints} to Endpoint
+}
+
+relationship OneToOne {
+  Project{owner} to User with builtInEntity
+}
+
+relationship ManyToMany {
+  Project{collaborators} to User with builtInEntity
+}
+
+paginate * with pagination
+service * with serviceClass
+dto * with mapstruct
