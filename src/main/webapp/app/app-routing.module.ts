@@ -9,7 +9,9 @@ import HomeComponent from './home/home.component';
 import NavbarComponent from './layouts/navbar/navbar.component';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
-import {ProjectListComponent} from "./project-list/project-list.component";
+import { ProjectListComponent } from "./client/project-list/project-list.component";
+import { ASC } from './config/navigation.constants';
+import { EndpointFormComponent } from './client/endpoint-form/endpoint-form.component';
 
 @NgModule({
   imports: [
@@ -28,6 +30,13 @@ import {ProjectListComponent} from "./project-list/project-list.component";
         {
           path: 'projects',
           component: ProjectListComponent,
+          data: {
+            defaultSort: 'id,' + ASC,
+          },
+        },
+        {
+          path: 'endpoints',
+          component: EndpointFormComponent,
         },
         {
           path: 'admin',
@@ -48,4 +57,4 @@ import {ProjectListComponent} from "./project-list/project-list.component";
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

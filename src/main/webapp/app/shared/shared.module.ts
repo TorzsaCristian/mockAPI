@@ -8,21 +8,31 @@ import FindLanguageFromKeyPipe from './language/find-language-from-key.pipe';
 import TranslateDirective from './language/translate.directive';
 import { AlertComponent } from './alert/alert.component';
 import { AlertErrorComponent } from './alert/alert-error.component';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { ReactiveFormsModule } from '@angular/forms';
 
 /**
  * Application wide Module
  */
 @NgModule({
-  imports: [AlertComponent, AlertErrorComponent, FindLanguageFromKeyPipe, TranslateDirective],
+  imports: [AlertComponent, InputTextareaModule, AlertErrorComponent, FindLanguageFromKeyPipe, TranslateDirective],
   exports: [
     CommonModule,
     NgbModule,
+    ReactiveFormsModule,
     FontAwesomeModule,
     AlertComponent,
     AlertErrorComponent,
     TranslateModule,
     FindLanguageFromKeyPipe,
     TranslateDirective,
+    InputTextareaModule,
+    ButtonModule,
+    InputTextModule,
+    DropdownModule
   ],
 })
-export default class SharedModule {}
+export default class SharedModule { }

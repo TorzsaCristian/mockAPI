@@ -1,0 +1,121 @@
+// * {
+//   box-sizing: border-box; /* Apply border-box sizing to all elements */
+// }
+
+.FormSection {
+  margin-bottom: 30px;
+  padding: 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  gap: 10px;
+  background-color: #f7f7f7;
+}
+
+.Label {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.Caption {
+  font-size: 14px;
+  margin-bottom: 15px;
+  color: #888;
+}
+
+.EndpointContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px; /* space between items */
+  margin-bottom: 10px;
+  // padding: 10px;
+  // border: 1px solid #d4d4d4;
+  border-radius: 6px;
+}
+
+.SchemaRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  // gap: 10px; /* space between items */
+  margin-bottom: 10px;
+  // padding: 10px;
+  // border: 1px solid #d0d0d0;
+  border-radius: 6px;
+}
+
+// .SchemaRow .Input {
+//   // margin-right: 5px;
+// }
+
+// .SchemaRow .Button {
+//   opacity: 0;
+// }
+
+.SchemaRow:hover .Button,
+.SchemaRow:focus-within .Button {
+  opacity: 1;
+}
+
+.SchemaRow .Input,
+.SchemaRow .Dropdown {
+  width: calc(90% / 3);
+  // margin: 5px;
+
+  padding-right: 5px;
+  // flex: 0 0 30%; /* grow | shrink | basis */
+}
+
+.custom-dropdown .p-dropdown-label {
+  white-space: nowrap; /* Prevent text from wrapping onto the next line */
+  overflow: hidden; /* Hide text outside the container */
+  text-overflow: ellipsis; /* Show ellipsis when text overflows */
+  width: 100%; /* Take full width of its container */
+  display: block; /* Make the label behave like a block element */
+}
+
+/* If you also need to handle the dropdown items: */
+.custom-dropdown .p-dropdown-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+::ng-deep .p-dropdown-trigger {
+  display: none !important;
+}
+
+// ::ng-host .Input {
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   gap: 15px; /* space between items */
+//   margin-bottom: 10px;
+//   // padding: 10px;
+//   // border: 1px solid #d4d4d4;
+//   border-radius: 6px;
+//   width: 30%;
+// }
+// ::ng-host .Dropdown {
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   gap: 15px; /* space between items */
+//   margin-bottom: 10px;
+//   // padding: 10px;
+//   // border: 1px solid #d4d4d4;
+//   border-radius: 6px;
+//   // width: 30%;
+// }
+
+// .SchemaRow .Input,
+// .SchemaRow .Dropdown {
+//   flex: 0 0 30%; /* grow | shrink | basis */
+// }
+
+// .SchemaRow p-button {
+//   flex: 0 0 10%; /* grow | shrink | basis */
+// }

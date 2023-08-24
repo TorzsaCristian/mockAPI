@@ -67,9 +67,11 @@ export class ProjectListComponent implements OnInit {
   protected fillComponentAttributeFromRoute(params: ParamMap, data: Data): void {
     const page = params.get(PAGE_HEADER);
     this.page = +(page ?? 1);
-    // const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');
-    // this.predicate = sort[0];
-    // this.ascending = sort[1] === ASC;
+    console.warn("params: ", params);
+    console.warn("data: ", data);
+    const sort = (params.get(SORT) ?? data[DEFAULT_SORT_DATA]).split(',');
+    this.predicate = sort[0];
+    this.ascending = sort[1] === ASC;
   }
 
   protected onResponseSuccess(response: EntityArrayResponseType): void {

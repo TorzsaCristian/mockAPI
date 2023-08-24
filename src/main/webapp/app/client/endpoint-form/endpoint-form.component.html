@@ -1,0 +1,89 @@
+<!-- <div class="max-w-100" style="max-width: 700px"> -->
+<div [formGroup]="endpointForm">
+  <div class="FormSection">
+    <label class="Label">Resource name</label>
+    <p class="Caption">Enter meaningful resource name, it will be used to generate API endpoints.</p>
+    <input type="text" pInputText formControlName="name" placeholder="Example: user, comments, articles..." />
+  </div>
+
+  <div class="FormSection">
+    <label class="Label">Schema (optional)</label>
+    <p class="Caption">Define Resource scheme, it will be used to generate mock data</p>
+    <div formArrayName="resourceSchema">
+      <div *ngFor="let schema of resourceSchemaArray.controls; let i = index" [formGroupName]="i">
+        <!-- Schema section -->
+        <div class="SchemaRow" *ngIf="i > 0; else idSection">
+          <div class="Input">
+            <input type="text" pInputText [style]="{ width: '100%' }" formControlName="name" placeholder="Field name" />
+          </div>
+
+          <div class="Dropdown">
+            <!-- Dropdown for type -->
+            <p-dropdown
+              class="custom-dropdown"
+              [options]="typeOptions"
+              [style]="{ width: '100%' }"
+              formControlName="type"
+              placeholder="Select a type"
+            ></p-dropdown>
+          </div>
+
+          <div class="Dropdown">
+            <!-- Show fakerMethod dropdown conditionally based on type's value -->
+            <p-dropdown
+              class="custom-dropdown"
+              *ngIf="schema.get('type')?.value === 'Faker.js'"
+              [style]="{ width: '100%' }"
+              [options]="fakerMethodOptions"
+              formControlName="fakerMethod"
+              placeholder="Select a faker method"
+            ></p-dropdown>
+          </div>
+          <p-button
+            icon="pi pi-minus"
+            [style]="{ width: '34px', height: '34px' }"
+            (click)="removeSchema(i)"
+            styleClass="p-button p-button-outlined"
+          ></p-button>
+        </div>
+
+        <!-- ID Section -->
+        <ng-template #idSection>
+          <div class="SchemaRow">
+            <div class="Input">
+              <input type="text" [style]="{ width: '100%' }" pInputText formControlName="name" placeholder="Field name" />
+            </div>
+            <div class="Input">
+              <input type="text" [style]="{ width: '100%' }" pInputText readonly placeholder="Object ID" />
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <p-button icon="pi pi-plus" (click)="addSchema()" styleClass="p-button p-button-outlined"></p-button>
+    </div>
+  </div>
+
+  <div class="FormSection">
+    <label class="Label">Endpoints</label>
+    <p class="Caption">Enable/disable endpoints and customize response JSON</p>
+    <div formArrayName="endpoints">
+      <div *ngFor="let endpoint of endpointsArray.controls; let i = index" [formGroupName]="i">
+        <div class="EndpointContainer">
+          <!-- <p-checkbox formControlName="enabled"></p-checkbox> -->
+          <input type="text" readonly pInputText formControlName="method" placeholder="Method" />
+
+          <input type="text" readonly pInputText formControlName="url" placeholder="URL" />
+          <!-- <textarea rows="5" cols="30" pInputTextarea formControlName="response" placeholder="$mockdata or JSON"></textarea> -->
+
+          <!-- <p-button type="button" (click)="removeEndpoint(i)" label="-" styleClass="p-button-secondary"></p-button> -->
+        </div>
+      </div>
+      <!-- <p-button type="button" (click)="addEndpoint()" label="Add Endpoint" styleClass="p-button-secondary"></p-button> -->
+    </div>
+  </div>
+
+  <div class="FormAction">
+    <p-button type="submit" (click)="submit()" label="Update" styleClass="p-button-primary"></p-button>
+  </div>
+</div>
+<!-- </div> -->
