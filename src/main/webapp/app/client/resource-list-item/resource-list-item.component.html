@@ -1,0 +1,26 @@
+<div class="flex p-1 gap-1 justify-content-start align-content-center" *ngIf="resource">
+  <span class="flex flex-wrap align-content-center" style="min-width: 100px; font-weight: bold; color: darkslategrey">{{
+    resource.name
+  }}</span>
+
+  <p-button
+    styleClass="p-button-sm p-button-raised p-button-text p-button-secondary"
+    label="Generate"
+    (onClick)="generateResouceEvent.emit()"
+  ></p-button>
+  <p-button
+    styleClass="p-button-sm p-button-raised p-button-text p-button-primary"
+    label="Edit"
+    (onClick)="editResourceEvent.emit()"
+  ></p-button>
+  <p-button
+    styleClass="p-button-sm p-button-raised p-button-text p-button-danger"
+    label="Delete"
+    (onClick)="deleteResourceEvent.emit()"
+  ></p-button>
+
+  <div style="min-width: 100px; padding-left: 1rem">
+    <label> Items: {{ resource.count }} </label>
+    <p-slider [(ngModel)]="resource.count"></p-slider>
+  </div>
+</div>

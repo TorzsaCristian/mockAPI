@@ -66,7 +66,7 @@ public class MockDataResource {
         });
 
         resource.setResourceSchemas(resourceSchemaDTOSet);
-
+        resource.setCount(0);
         resource = resourceService.save(resource);
 
 

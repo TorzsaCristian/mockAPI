@@ -11,9 +11,10 @@ import { EndpointFormComponent } from 'app/client/endpoint-form/endpoint-form.co
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ProjectDetailsComponent } from 'app/client/project-details/project-details.component';
+import { ResourceListItemComponent } from 'app/client/resource-list-item/resource-list-item.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule, FormsModule, InputTextareaModule, ReactiveFormsModule, FooterComponent, PageRibbonComponent, FormatMediumDatePipe],
-  declarations: [MainComponent, ProjectListComponent, EndpointFormComponent, ProjectDetailsComponent],
+  declarations: [MainComponent, ProjectListComponent, EndpointFormComponent, ProjectDetailsComponent, ResourceListItemComponent],
 })
 export default class MainModule { }

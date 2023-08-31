@@ -6,7 +6,14 @@
 
     <ul style="list-style-type: none; padding: 5px; margin: 5px">
       <li *ngFor="let resource of resources" style="padding: 5px">
-        <p-button styleClass="p-button-sm" label="{{ resource.name }}" (onClick)="openDialog(resource)"></p-button>
+        <!-- <p-button styleClass="p-button-sm" label="{{ resource.name }}" (onClick)="openDialog(resource)"></p-button> -->
+        <jhi-resource-list-item
+          [resource]="resource"
+          (generateResouceEvent)="(undefined)"
+          (editResourceEvent)="openDialog(resource)"
+          (deleteResourceEvent)="(undefined)"
+        >
+        </jhi-resource-list-item>
       </li>
     </ul>
     <p-button styleClass="p-button-sm" label=" Add new" (onClick)="openDialog()"></p-button>
