@@ -34,7 +34,7 @@ export class MockService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) { }
 
 
-  sendData(serviceObject: MockObject): Observable<MockObject> {
-    return this.http.post<MockObject>(this.resourceUrl, serviceObject);
+  sendData(projectId: string, serviceObject: MockObject): Observable<MockObject> {
+    return this.http.post<MockObject>(`${this.resourceUrl}/project/${projectId}`, serviceObject);
   }
 }

@@ -1,15 +1,23 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators, ValidationErrors } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { MockService } from '../mock.service';
+import { IResource } from 'app/entities/resource/resource.model';
 
 @Component({
   selector: 'jhi-endpoint-form',
   templateUrl: './endpoint-form.component.html',
   styleUrls: ['./endpoint-form.component.scss']
 })
-export class EndpointFormComponent implements OnInit, OnDestroy {
+export class EndpointFormComponent implements OnInit, OnDestroy, OnChanges {
+
+
+  @Input() resource: IResource | null = null;
+  @Input() projectId: string | null = null;
+
+  @Output() submitFormEvent = new EventEmitter();
+
 
 
   typeOptions: SelectItem[] = [
@@ -21,6 +29,7 @@ export class EndpointFormComponent implements OnInit, OnDestroy {
     { label: 'Array', value: 'Array' },
     { label: 'Date', value: 'Date' },
   ];
+
 
   fakerMethodOptions: SelectItem[] = [
     { label: 'name.fullName', value: 'name.fullName' },
@@ -34,7 +43,7 @@ export class EndpointFormComponent implements OnInit, OnDestroy {
 
   nameChangeSubscription: Subscription | undefined = undefined;
 
-  constructor(private mockService: MockService, private fb: FormBuilder) {
+  constructor(private mockService: MockService, private fb: FormBuilder, private changeDetector: ChangeDetectorRef) {
     this.endpointForm = this.fb.group({
       name: ['', Validators.required],
       generator: [''],
@@ -44,8 +53,6 @@ export class EndpointFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.createDetaulfSchemas();
-    this.createDefaultEndpoints();
 
     this.nameChangeSubscription = this.endpointForm.get('name')!.valueChanges.subscribe(value => {
       this.endpointsArray.controls.forEach(element => {
@@ -58,6 +65,46 @@ export class EndpointFormComponent implements OnInit, OnDestroy {
         }
       });
     });
+
+    if (this.resource) {
+      console.warn(this.resource);
+      this.patchForm();
+    }
+  }
+  // Refresh if input changes
+  ngOnChanges(): void {
+    if (this.resource) {
+      this.endpointsArray.clear();
+      this.resourceSchemaArray.clear();
+      this.endpointForm.reset();
+      this.patchForm();
+    } else {
+      this.endpointsArray.clear();
+      this.resourceSchemaArray.clear();
+      this.endpointForm.reset();
+      this.createDetaulfSchemas();
+      this.createDefaultEndpoints();
+    }
+  }
+
+  patchForm(): void {
+
+    this.resourceSchemaArray.push(this.fb.group({
+      name: 'id',
+      type: 'Object ID'
+    }));
+    this.endpointForm.patchValue({
+      name: this.resource?.name,
+      generator: this.resource?.generator,
+    });
+    this.resource?.resourceSchemas?.forEach(element => {
+      this.resourceSchemaArray.push(this.fb.group({
+        name: element.name,
+        type: element.type,
+        fakerMethod: element.fakerMethod,
+      }));
+    });
+    this.changeDetector.detectChanges();
   }
 
   ngOnDestroy(): void {
@@ -162,9 +209,10 @@ export class EndpointFormComponent implements OnInit, OnDestroy {
   submit(): void {
     if (!this.endpointForm.invalid) {
       console.warn(this.endpointForm.value);
-      this.mockService.sendData(this.endpointForm.value).subscribe(
+      this.mockService.sendData(this.projectId!, this.endpointForm.value).subscribe(
         res => {
           console.warn(res);
+          this.submitFormEvent.emit();
         },
         err => {
           console.error(err);

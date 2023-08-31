@@ -2,17 +2,18 @@ package com.innovasoftware.mockapi.service.dto;
 
 
 import java.util.List;
+import java.util.Set;
 
 public class MockDataDTO extends ResourceDTO {
 
-    private List<ResourceSchemaDTO> resourceSchema;
+    private Set<ResourceSchemaDTO> resourceSchema;
     private List<EndpointDTO> endpoints;
 
-    public List<ResourceSchemaDTO> getResourceSchema() {
+    public Set<ResourceSchemaDTO> getResourceSchema() {
         return resourceSchema;
     }
 
-    public void setResourceSchema(List<ResourceSchemaDTO> resourceSchema) {
+    public void setResourceSchema(Set<ResourceSchemaDTO> resourceSchema) {
         this.resourceSchema = resourceSchema;
     }
 

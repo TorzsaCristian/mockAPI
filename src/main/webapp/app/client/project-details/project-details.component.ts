@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IProject } from 'app/entities/project/project.model';
 import { IResource } from 'app/entities/resource/resource.model';
@@ -19,11 +19,15 @@ export class ProjectDetailsComponent implements OnInit {
 
   dialogResource: IResource | null = null;
 
-  constructor(protected activatedRoute: ActivatedRoute, private resourceService: ResourceService) { }
+  constructor(protected activatedRoute: ActivatedRoute, private resourceService: ResourceService, private changeDetector: ChangeDetectorRef) { }
 
 
 
   ngOnInit(): void {
+    this.getResources();
+  }
+
+  getResources(): void {
     if (this.project) {
       this.resourceService.findByProjectId(this.project.id).subscribe((res) => {
         this.resources = res.body;
@@ -32,11 +36,28 @@ export class ProjectDetailsComponent implements OnInit {
     }
   }
 
-  viewResource(resource: IResource): void {
-    console.warn("View resource: " + resource.id);
-    this.dialogResource = resource;
+  openDialog(resource: IResource | undefined = undefined): void {
+    if (resource) {
+      console.warn("View resource: " + resource.id);
+      this.dialogResource = resource;
+      // this.changeDetector.detectChanges();
+    }
+
     this.visible = true;
   }
+
+  handleOnHide(): void {
+    this.visible = false;
+    this.dialogResource = null;
+  }
+
+  handleSubmitForm(): void {
+    this.handleOnHide();
+    this.getResources();
+  }
+
+
+
 
   previousState(): void {
     window.history.back();

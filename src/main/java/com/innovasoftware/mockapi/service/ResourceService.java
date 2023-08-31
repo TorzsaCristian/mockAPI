@@ -134,7 +134,6 @@ public class ResourceService {
             resource.setResourceSchemas(resourceSchemas);
         });
 
-        log.debug(resources.get(0).getResourceSchemas().toString()+ "++++++");
 
         return resourceMapper.toDto(resources);
     }

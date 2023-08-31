@@ -6,12 +6,21 @@
 
     <ul style="list-style-type: none; padding: 5px; margin: 5px">
       <li *ngFor="let resource of resources" style="padding: 5px">
-        <p-button styleClass="p-button-sm" label="{{ resource.name }}" (onClick)="viewResource(resource)"></p-button>
+        <p-button styleClass="p-button-sm" label="{{ resource.name }}" (onClick)="openDialog(resource)"></p-button>
       </li>
     </ul>
+    <p-button styleClass="p-button-sm" label=" Add new" (onClick)="openDialog()"></p-button>
   </div>
 </div>
 
-<p-dialog header="Header" [modal]="true" [(visible)]="visible" [style]="{ width: '70vw' }">
-  <jhi-endpoint-form></jhi-endpoint-form>
+<p-dialog
+  *ngIf="project"
+  header="Header"
+  [dismissableMask]="true"
+  [modal]="true"
+  [(visible)]="visible"
+  [style]="{ width: '70vw' }"
+  (onHide)="handleOnHide()"
+>
+  <jhi-endpoint-form [projectId]="project.id" [resource]="dialogResource" (submitFormEvent)="handleSubmitForm()"></jhi-endpoint-form>
 </p-dialog>
