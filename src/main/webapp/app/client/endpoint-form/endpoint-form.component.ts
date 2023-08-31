@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators, ValidationErrors } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
+import { MockService } from '../mock.service';
 
 @Component({
   selector: 'jhi-endpoint-form',
@@ -33,10 +34,10 @@ export class EndpointFormComponent implements OnInit, OnDestroy {
 
   nameChangeSubscription: Subscription | undefined = undefined;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private mockService: MockService, private fb: FormBuilder) {
     this.endpointForm = this.fb.group({
       name: ['', Validators.required],
-      generator: ['', Validators.required],
+      generator: [''],
       resourceSchema: this.fb.array([]),
       endpoints: this.fb.array([]),
     });
@@ -47,10 +48,14 @@ export class EndpointFormComponent implements OnInit, OnDestroy {
     this.createDefaultEndpoints();
 
     this.nameChangeSubscription = this.endpointForm.get('name')!.valueChanges.subscribe(value => {
-      // this.createDefaultEndpoints(value);
-
       this.endpointsArray.controls.forEach(element => {
-        element.get('url')!.setValue(`/api/${value as string}`);
+        const urlControl = element.get('url');
+        if (urlControl) {
+          const currentValue = urlControl.value;
+          if (typeof currentValue === 'string') {
+            urlControl.setValue(this.replaceAfterSecondSlash(currentValue, value));
+          }
+        }
       });
     });
   }
@@ -97,38 +102,41 @@ export class EndpointFormComponent implements OnInit, OnDestroy {
       enabled: true,
       method: 'GET',
       url: `/api/${resourceName}`,
-      response: ''
+      response: '$mockData'
     }));
     this.endpointsArray.push(this.fb.group({
       enabled: true,
       method: 'GET',
       url: `/api/${resourceName}/:id`,
-      response: ''
+      response: '$mockData'
     }));
     this.endpointsArray.push(this.fb.group({
       enabled: true,
       method: 'POST',
       url: `/api/${resourceName}`,
-      response: ''
+      response: '$mockData'
     }));
     this.endpointsArray.push(this.fb.group({
       enabled: true,
       method: 'PUT',
       url: `/api/${resourceName}/:id`,
-      response: ''
+      response: '$mockData'
     }));
     this.endpointsArray.push(this.fb.group({
       enabled: true,
       method: 'DELETE',
       url: `/api/${resourceName}/:id`,
-      response: ''
+      response: '$mockData'
     }));
   }
 
+
+
   addSchema(): void {
     this.resourceSchemaArray.push(this.fb.group({
-      name: '',
+      name: ['', Validators.required],
       type: this.typeOptions[1].value,
+      fakerMethod: undefined,
     }));
   }
 
@@ -152,6 +160,41 @@ export class EndpointFormComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    console.warn(this.endpointForm.value);
+    if (!this.endpointForm.invalid) {
+      console.warn(this.endpointForm.value);
+      this.mockService.sendData(this.endpointForm.value).subscribe(
+        res => {
+          console.warn(res);
+        },
+        err => {
+          console.error(err);
+        }
+      );
+    } else {
+      console.warn("form invalid");
+      this.getFormValidationErrors();
+    }
+  }
+
+  replaceAfterSecondSlash(str: string, replacement: string): string {
+    const parts = str.split('/');
+
+    // Check if there are at least 3 parts and replace the third part.
+    if (parts.length > 2) {
+      parts[2] = replacement;
+    }
+
+    return parts.join('/');
+  }
+
+  getFormValidationErrors(): void {
+    Object.keys(this.endpointForm.controls).forEach(key => {
+      const controlErrors: ValidationErrors | null | undefined = this.endpointForm.get(key)?.errors;
+      if (controlErrors != null) {
+        Object.keys(controlErrors).forEach(keyError => {
+          console.warn('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+        });
+      }
+    });
   }
 }

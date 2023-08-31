@@ -12,6 +12,9 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
 import { ProjectListComponent } from "./client/project-list/project-list.component";
 import { ASC } from './config/navigation.constants';
 import { EndpointFormComponent } from './client/endpoint-form/endpoint-form.component';
+import { projectResolve } from "./client/project-routing-resolve.service";
+import { ProjectDetailsComponent } from './client/project-details/project-details.component';
+
 
 @NgModule({
   imports: [
@@ -33,6 +36,14 @@ import { EndpointFormComponent } from './client/endpoint-form/endpoint-form.comp
           data: {
             defaultSort: 'id,' + ASC,
           },
+        },
+        {
+          path: 'projects/:id/view',
+          component: ProjectDetailsComponent,
+          resolve: {
+            project: projectResolve,
+          },
+          canActivate: [UserRouteAccessService],
         },
         {
           path: 'endpoints',

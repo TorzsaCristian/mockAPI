@@ -68,11 +68,15 @@
     <p class="Caption">Enable/disable endpoints and customize response JSON</p>
     <div formArrayName="endpoints">
       <div *ngFor="let endpoint of endpointsArray.controls; let i = index" [formGroupName]="i">
-        <div class="EndpointContainer">
+        <div class="EndpointContainer flex" style="width: 100%">
           <!-- <p-checkbox formControlName="enabled"></p-checkbox> -->
-          <input type="text" readonly pInputText formControlName="method" placeholder="Method" />
+          <div class="flex flex-1">
+            <input type="text" readonly [style]="{ width: '100%' }" pInputText formControlName="method" placeholder="Method" />
+          </div>
 
-          <input type="text" readonly pInputText formControlName="url" placeholder="URL" />
+          <div class="flex flex-1">
+            <input type="text" readonly [style]="{ width: '100%' }" pInputText formControlName="url" placeholder="URL" />
+          </div>
           <!-- <textarea rows="5" cols="30" pInputTextarea formControlName="response" placeholder="$mockdata or JSON"></textarea> -->
 
           <!-- <p-button type="button" (click)="removeEndpoint(i)" label="-" styleClass="p-button-secondary"></p-button> -->
