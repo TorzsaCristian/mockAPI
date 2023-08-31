@@ -12,6 +12,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
+import { DialogModule } from 'primeng/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 
 /**
@@ -32,7 +33,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     InputTextareaModule,
     ButtonModule,
     InputTextModule,
-    DropdownModule
+    DropdownModule,
+    DialogModule
   ],
 })
 export default class SharedModule { }

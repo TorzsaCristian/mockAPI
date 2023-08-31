@@ -29,7 +29,7 @@ public class Mock implements Serializable {
 
     @DBRef
     @Field("resources")
-    @JsonIgnoreProperties(value = { "resourceSchemas", "endpoints", "mock" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "resourceSchemas", "endpoints", "mock", "project" }, allowSetters = true)
     private Set<Resource> resources = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

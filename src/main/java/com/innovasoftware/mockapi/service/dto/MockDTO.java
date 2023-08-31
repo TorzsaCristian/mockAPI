@@ -1,5 +1,7 @@
 package com.innovasoftware.mockapi.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -7,6 +9,7 @@ import java.util.Objects;
  * A DTO for the {@link com.innovasoftware.mockapi.domain.Mock} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class MockDTO implements Serializable {
 
     private String id;

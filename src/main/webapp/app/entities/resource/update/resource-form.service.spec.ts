@@ -24,6 +24,7 @@ describe('Resource Form Service', () => {
             generator: expect.any(Object),
             count: expect.any(Object),
             mock: expect.any(Object),
+            project: expect.any(Object),
           })
         );
       });
@@ -38,6 +39,7 @@ describe('Resource Form Service', () => {
             generator: expect.any(Object),
             count: expect.any(Object),
             mock: expect.any(Object),
+            project: expect.any(Object),
           })
         );
       });

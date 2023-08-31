@@ -1,13 +1,18 @@
 package com.innovasoftware.mockapi.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the {@link com.innovasoftware.mockapi.domain.Resource} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResourceDTO implements Serializable {
 
     private String id;
@@ -20,6 +25,10 @@ public class ResourceDTO implements Serializable {
     private Integer count;
 
     private MockDTO mock;
+
+    private ProjectDTO project;
+
+    private Set<ResourceSchemaDTO> resourceSchemas = new HashSet<>();
 
     public String getId() {
         return id;
@@ -61,6 +70,22 @@ public class ResourceDTO implements Serializable {
         this.mock = mock;
     }
 
+    public ProjectDTO getProject() {
+        return project;
+    }
+
+    public void setProject(ProjectDTO project) {
+        this.project = project;
+    }
+
+    public Set<ResourceSchemaDTO> getResourceSchemas() {
+        return this.resourceSchemas;
+    }
+
+    public void setResourceSchemas(Set<ResourceSchemaDTO> resourceSchemas) {
+        this.resourceSchemas = resourceSchemas;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -91,6 +116,7 @@ public class ResourceDTO implements Serializable {
             ", generator='" + getGenerator() + "'" +
             ", count=" + getCount() +
             ", mock=" + getMock() +
+            ", project=" + getProject() +
             "}";
     }
 }

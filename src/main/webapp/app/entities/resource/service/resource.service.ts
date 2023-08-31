@@ -16,7 +16,7 @@ export type EntityArrayResponseType = HttpResponse<IResource[]>;
 export class ResourceService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/resources');
 
-  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) { }
 
   create(resource: NewResource): Observable<EntityResponseType> {
     return this.http.post<IResource>(this.resourceUrl, resource, { observe: 'response' });
@@ -32,6 +32,10 @@ export class ResourceService {
 
   find(id: string): Observable<EntityResponseType> {
     return this.http.get<IResource>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  findByProjectId(id: string): Observable<EntityArrayResponseType> {
+    return this.http.get<IResource[]>(`${this.resourceUrl}/project/${id}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {

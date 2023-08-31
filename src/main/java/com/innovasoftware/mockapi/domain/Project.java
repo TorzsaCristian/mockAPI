@@ -1,5 +1,6 @@
 package com.innovasoftware.mockapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -41,6 +42,11 @@ public class Project implements Serializable {
     @DBRef
     @Field("owner")
     private User owner;
+
+    @DBRef
+    @Field("resources")
+    @JsonIgnoreProperties(value = { "resourceSchemas", "endpoints", "mock", "project" }, allowSetters = true)
+    private Set<Resource> resources = new HashSet<>();
 
     @DBRef
     @Field("collaborators")
@@ -136,6 +142,37 @@ public class Project implements Serializable {
 
     public Project owner(User user) {
         this.setOwner(user);
+        return this;
+    }
+
+    public Set<Resource> getResources() {
+        return this.resources;
+    }
+
+    public void setResources(Set<Resource> resources) {
+        if (this.resources != null) {
+            this.resources.forEach(i -> i.setProject(null));
+        }
+        if (resources != null) {
+            resources.forEach(i -> i.setProject(this));
+        }
+        this.resources = resources;
+    }
+
+    public Project resources(Set<Resource> resources) {
+        this.setResources(resources);
+        return this;
+    }
+
+    public Project addResources(Resource resource) {
+        this.resources.add(resource);
+        resource.setProject(this);
+        return this;
+    }
+
+    public Project removeResources(Resource resource) {
+        this.resources.remove(resource);
+        resource.setProject(null);
         return this;
     }
 

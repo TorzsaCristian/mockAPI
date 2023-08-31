@@ -165,6 +165,18 @@ public class ResourceResource {
     }
 
     /**
+     * {@code GET  /resources/project/:id} : get the resource based on projectId
+     * @param projectId the id of the project
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the resourceDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/resources/project/{projectId}")
+    public ResponseEntity<List<ResourceDTO>> getResourcesByProjectId(@PathVariable String projectId) {
+        log.debug("REST request to get Resource : {}", projectId);
+        List<ResourceDTO> resourceDTO = resourceService.findAllWithEagerRelationshipsByProjectId(projectId);
+        return ResponseEntity.ok().body(resourceDTO);
+    }
+
+    /**
      * {@code DELETE  /resources/:id} : delete the "id" resource.
      *
      * @param id the id of the resourceDTO to delete.

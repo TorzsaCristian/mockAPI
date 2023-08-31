@@ -40,6 +40,21 @@
             <option [ngValue]="mockOption" *ngFor="let mockOption of mocksSharedCollection">{{ mockOption.id }}</option>
           </select>
         </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="mockApiApp.resource.project" for="field_project">Project</label>
+          <select
+            class="form-control"
+            id="field_project"
+            data-cy="project"
+            name="project"
+            formControlName="project"
+            [compareWith]="compareProject"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="projectOption" *ngFor="let projectOption of projectsSharedCollection">{{ projectOption.id }}</option>
+          </select>
+        </div>
       </div>
 
       <div>

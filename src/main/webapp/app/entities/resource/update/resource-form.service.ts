@@ -22,6 +22,7 @@ type ResourceFormGroupContent = {
   generator: FormControl<IResource['generator']>;
   count: FormControl<IResource['count']>;
   mock: FormControl<IResource['mock']>;
+  project: FormControl<IResource['project']>;
 };
 
 export type ResourceFormGroup = FormGroup<ResourceFormGroupContent>;
@@ -47,6 +48,7 @@ export class ResourceFormService {
       generator: new FormControl(resourceRawValue.generator),
       count: new FormControl(resourceRawValue.count),
       mock: new FormControl(resourceRawValue.mock),
+      project: new FormControl(resourceRawValue.project),
     });
   }
 

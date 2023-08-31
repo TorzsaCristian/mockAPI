@@ -33,7 +33,7 @@ public class ResourceSchema implements Serializable {
 
     @DBRef
     @Field("resource")
-    @JsonIgnoreProperties(value = { "resourceSchemas", "endpoints", "mock" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "resourceSchemas", "endpoints", "mock", "project" }, allowSetters = true)
     private Resource resource;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

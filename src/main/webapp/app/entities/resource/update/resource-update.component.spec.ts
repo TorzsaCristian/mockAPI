@@ -11,6 +11,8 @@ import { ResourceService } from '../service/resource.service';
 import { IResource } from '../resource.model';
 import { IMock } from 'app/entities/mock/mock.model';
 import { MockService } from 'app/entities/mock/service/mock.service';
+import { IProject } from 'app/entities/project/project.model';
+import { ProjectService } from 'app/entities/project/service/project.service';
 
 import { ResourceUpdateComponent } from './resource-update.component';
 
@@ -21,6 +23,7 @@ describe('Resource Management Update Component', () => {
   let resourceFormService: ResourceFormService;
   let resourceService: ResourceService;
   let mockService: MockService;
+  let projectService: ProjectService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -43,6 +46,7 @@ describe('Resource Management Update Component', () => {
     resourceFormService = TestBed.inject(ResourceFormService);
     resourceService = TestBed.inject(ResourceService);
     mockService = TestBed.inject(MockService);
+    projectService = TestBed.inject(ProjectService);
 
     comp = fixture.componentInstance;
   });
@@ -70,15 +74,40 @@ describe('Resource Management Update Component', () => {
       expect(comp.mocksSharedCollection).toEqual(expectedCollection);
     });
 
+    it('Should call Project query and add missing value', () => {
+      const resource: IResource = { id: 'CBA' };
+      const project: IProject = { id: 'b3cb7b41-0e21-4dae-97c2-2df6f86a3fa4' };
+      resource.project = project;
+
+      const projectCollection: IProject[] = [{ id: 'dc00a94b-a7f2-45ac-8ad7-875ff7e215c3' }];
+      jest.spyOn(projectService, 'query').mockReturnValue(of(new HttpResponse({ body: projectCollection })));
+      const additionalProjects = [project];
+      const expectedCollection: IProject[] = [...additionalProjects, ...projectCollection];
+      jest.spyOn(projectService, 'addProjectToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ resource });
+      comp.ngOnInit();
+
+      expect(projectService.query).toHaveBeenCalled();
+      expect(projectService.addProjectToCollectionIfMissing).toHaveBeenCalledWith(
+        projectCollection,
+        ...additionalProjects.map(expect.objectContaining)
+      );
+      expect(comp.projectsSharedCollection).toEqual(expectedCollection);
+    });
+
     it('Should update editForm', () => {
       const resource: IResource = { id: 'CBA' };
       const mock: IMock = { id: 'ad296ffc-2e9e-4767-8fdb-be86b3f448e3' };
       resource.mock = mock;
+      const project: IProject = { id: 'bf7d2bdb-f2c2-4483-b125-f01834167e29' };
+      resource.project = project;
 
       activatedRoute.data = of({ resource });
       comp.ngOnInit();
 
       expect(comp.mocksSharedCollection).toContain(mock);
+      expect(comp.projectsSharedCollection).toContain(project);
       expect(comp.resource).toEqual(resource);
     });
   });
@@ -159,6 +188,16 @@ describe('Resource Management Update Component', () => {
         jest.spyOn(mockService, 'compareMock');
         comp.compareMock(entity, entity2);
         expect(mockService.compareMock).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareProject', () => {
+      it('Should forward to projectService', () => {
+        const entity = { id: 'ABC' };
+        const entity2 = { id: 'CBA' };
+        jest.spyOn(projectService, 'compareProject');
+        comp.compareProject(entity, entity2);
+        expect(projectService.compareProject).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

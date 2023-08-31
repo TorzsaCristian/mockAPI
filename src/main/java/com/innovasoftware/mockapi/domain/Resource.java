@@ -47,6 +47,11 @@ public class Resource implements Serializable {
     @JsonIgnoreProperties(value = { "resources" }, allowSetters = true)
     private Mock mock;
 
+    @DBRef
+    @Field("project")
+    @JsonIgnoreProperties(value = { "owner", "resources", "collaborators" }, allowSetters = true)
+    private Project project;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public String getId() {
@@ -173,6 +178,19 @@ public class Resource implements Serializable {
 
     public Resource mock(Mock mock) {
         this.setMock(mock);
+        return this;
+    }
+
+    public Project getProject() {
+        return this.project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public Resource project(Project project) {
+        this.setProject(project);
         return this;
     }
 

@@ -1,12 +1,19 @@
 package com.innovasoftware.mockapi.service;
 
 import com.innovasoftware.mockapi.domain.Resource;
+import com.innovasoftware.mockapi.domain.ResourceSchema;
 import com.innovasoftware.mockapi.repository.ResourceRepository;
+import com.innovasoftware.mockapi.repository.ResourceSchemaRepository;
 import com.innovasoftware.mockapi.service.dto.ResourceDTO;
 import com.innovasoftware.mockapi.service.mapper.ResourceMapper;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +29,9 @@ public class ResourceService {
     private final ResourceRepository resourceRepository;
 
     private final ResourceMapper resourceMapper;
+
+    @Autowired
+    ResourceSchemaRepository resourceSchemaRepository;
 
     public ResourceService(ResourceRepository resourceRepository, ResourceMapper resourceMapper) {
         this.resourceRepository = resourceRepository;
@@ -92,7 +102,9 @@ public class ResourceService {
      * @return the entity.
      */
     public Optional<ResourceDTO> findOne(String id) {
-        log.debug("Request to get Resource : {}", id);
+        log.debug("++++++Request to get Resource : {}", id);
+        Resource resource = resourceRepository.findById(id).orElse(null);
+        log.debug(resource.getResourceSchemas().toString());
         return resourceRepository.findById(id).map(resourceMapper::toDto);
     }
 
@@ -104,5 +116,26 @@ public class ResourceService {
     public void delete(String id) {
         log.debug("Request to delete Resource : {}", id);
         resourceRepository.deleteById(id);
+    }
+
+    public List<ResourceDTO> findByProjectId(String projectId) {
+        log.debug("Request to get Resource by project id: {}", projectId);
+        Resource resource = resourceRepository.findByProjectId(projectId).get(0);
+        log.debug(resource.getResourceSchemas().toString());
+        List<ResourceDTO> resourceDTO = resourceMapper.toDto(resourceRepository.findByProjectId(projectId));
+        return resourceDTO;
+    }
+    public List<ResourceDTO> findAllWithEagerRelationshipsByProjectId(String projectId){
+//        ObjectId id = new ObjectId(projectId);
+        List<Resource> resources = resourceRepository.findByProjectId(projectId);
+        resources.stream().forEach(resource -> {
+            // Use Project repository to retrieve the project
+            Set<ResourceSchema> resourceSchemas = resourceSchemaRepository.findAllByResourceId(resource.getId());
+            resource.setResourceSchemas(resourceSchemas);
+        });
+
+        log.debug(resources.get(0).getResourceSchemas().toString()+ "++++++");
+
+        return resourceMapper.toDto(resources);
     }
 }

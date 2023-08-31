@@ -23,7 +23,8 @@
       "count": "Count",
       "resourceSchema": "Resource Schema",
       "endpoints": "Endpoints",
-      "mock": "Mock"
+      "mock": "Mock",
+      "project": "Project"
     }
   }
 }

@@ -1,5 +1,6 @@
 package com.innovasoftware.mockapi.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -11,6 +12,7 @@ import java.util.Set;
  * A DTO for the {@link com.innovasoftware.mockapi.domain.Project} entity.
  */
 @SuppressWarnings("common-java:DuplicatedBlocks")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProjectDTO implements Serializable {
 
     private String id;

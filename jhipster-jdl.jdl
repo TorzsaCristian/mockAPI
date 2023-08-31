@@ -42,6 +42,10 @@ relationship OneToMany {
   Resource{endpoints} to Endpoint
 }
 
+relationship OneToMany {
+    Project{resources} to Resource
+}
+
 relationship OneToOne {
   Project{owner} to User with builtInEntity
 }

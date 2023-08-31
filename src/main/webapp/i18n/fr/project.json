@@ -24,6 +24,7 @@
       "isPublic": "Is Public",
       "createdAt": "Created At",
       "owner": "Owner",
+      "resources": "Resources",
       "collaborators": "Collaborators"
     }
   }

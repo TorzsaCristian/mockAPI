@@ -12,6 +12,8 @@ import { IResource } from '../resource.model';
 import { ResourceService } from '../service/resource.service';
 import { IMock } from 'app/entities/mock/mock.model';
 import { MockService } from 'app/entities/mock/service/mock.service';
+import { IProject } from 'app/entities/project/project.model';
+import { ProjectService } from 'app/entities/project/service/project.service';
 
 @Component({
   standalone: true,
@@ -24,6 +26,7 @@ export class ResourceUpdateComponent implements OnInit {
   resource: IResource | null = null;
 
   mocksSharedCollection: IMock[] = [];
+  projectsSharedCollection: IProject[] = [];
 
   editForm: ResourceFormGroup = this.resourceFormService.createResourceFormGroup();
 
@@ -31,10 +34,13 @@ export class ResourceUpdateComponent implements OnInit {
     protected resourceService: ResourceService,
     protected resourceFormService: ResourceFormService,
     protected mockService: MockService,
+    protected projectService: ProjectService,
     protected activatedRoute: ActivatedRoute
   ) {}
 
   compareMock = (o1: IMock | null, o2: IMock | null): boolean => this.mockService.compareMock(o1, o2);
+
+  compareProject = (o1: IProject | null, o2: IProject | null): boolean => this.projectService.compareProject(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ resource }) => {
@@ -85,6 +91,10 @@ export class ResourceUpdateComponent implements OnInit {
     this.resourceFormService.resetForm(this.editForm, resource);
 
     this.mocksSharedCollection = this.mockService.addMockToCollectionIfMissing<IMock>(this.mocksSharedCollection, resource.mock);
+    this.projectsSharedCollection = this.projectService.addProjectToCollectionIfMissing<IProject>(
+      this.projectsSharedCollection,
+      resource.project
+    );
   }
 
   protected loadRelationshipsOptions(): void {
@@ -93,5 +103,11 @@ export class ResourceUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IMock[]>) => res.body ?? []))
       .pipe(map((mocks: IMock[]) => this.mockService.addMockToCollectionIfMissing<IMock>(mocks, this.resource?.mock)))
       .subscribe((mocks: IMock[]) => (this.mocksSharedCollection = mocks));
+
+    this.projectService
+      .query()
+      .pipe(map((res: HttpResponse<IProject[]>) => res.body ?? []))
+      .pipe(map((projects: IProject[]) => this.projectService.addProjectToCollectionIfMissing<IProject>(projects, this.resource?.project)))
+      .subscribe((projects: IProject[]) => (this.projectsSharedCollection = projects));
   }
 }

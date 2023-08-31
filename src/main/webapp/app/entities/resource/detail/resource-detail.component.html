@@ -32,6 +32,12 @@
             <a [routerLink]="['/mock', resource.mock.id, 'view']">{{ resource.mock.id }}</a>
           </div>
         </dd>
+        <dt><span jhiTranslate="mockApiApp.resource.project">Project</span></dt>
+        <dd>
+          <div *ngIf="resource.project">
+            <a [routerLink]="['/project', resource.project.id, 'view']">{{ resource.project.id }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
