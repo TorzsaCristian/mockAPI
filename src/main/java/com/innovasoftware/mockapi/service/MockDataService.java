@@ -1,6 +1,11 @@
 package com.innovasoftware.mockapi.service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.innovasoftware.mockapi.service.dto.MockDataDTO;
+import com.innovasoftware.mockapi.service.dto.ResourceDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -57,6 +62,41 @@ public class MockDataService {
 
 
     }
+
+
+    public String generateMockData(ResourceDTO resource){
+        log.debug("Request to generate mock data");
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonArray jsonArray = new JsonArray();
+
+
+
+        for(int i = 0; i < 10; i++) {
+            JsonObject jsonObject = new JsonObject();
+            resource.getResourceSchemas().forEach(resourceSchema -> {
+                log.info("Resource schema: {}", resourceSchema);
+                if (resourceSchema.getType().equals("Faker.js")) {
+                    String[] splitMethod = resourceSchema.getFakerMethod().split("\\.");
+                    if (splitMethod.length > 1) {
+//                        Faker fkr = new Faker();
+                        String randomData = generateData(faker, splitMethod[0], splitMethod[1]);
+                        log.info("Random data name:{}  data:{}", resourceSchema.getName(), randomData);
+                        jsonObject.addProperty(resourceSchema.getName(), randomData);
+                    }
+                }
+            });
+            jsonArray.add(jsonObject);
+        }
+
+//        JsonObject result = new JsonObject();
+//        result.add("items", jsonArray);
+
+
+        return gson.toJson(jsonArray);
+
+    }
+
 
 
     private static Object getSubFaker(Faker faker, String fieldName) {

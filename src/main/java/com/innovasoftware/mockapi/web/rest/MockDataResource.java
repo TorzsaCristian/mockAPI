@@ -48,6 +48,28 @@ public class MockDataResource {
                                                   @RequestBody MockDataDTO mockData) throws URISyntaxException {
         log.info("REST request to create MockData : {}", mockData);
 
+        ResourceDTO resource = this.handleCreate(projectId, mockData);
+
+        // handle update???
+
+
+
+        return ResponseEntity
+            .ok(resource);
+    }
+
+    @PostMapping("/mock-data/generate/{resourceId}")
+    public ResponseEntity<String> createMock(@PathVariable(value = "resourceId", required = true) final String resourceId){
+
+
+        ResourceDTO resource = resourceService.findOne(resourceId).orElseThrow();
+
+       return  ResponseEntity.ok(mockDataService.generateMockData(resource));
+    }
+
+
+    private ResourceDTO handleCreate(String projectId, MockDataDTO mockData) {
+
         ProjectDTO project = projectService.findOne(projectId).orElseThrow();
 
 
@@ -69,14 +91,40 @@ public class MockDataResource {
         resource.setCount(0);
         resource = resourceService.save(resource);
 
-
-
-//        mockDataService.generateMockData(mockData);
-
-
-        return ResponseEntity
-            .ok(resource);
+        return resource;
     }
+
+//    private ResourceDTO handleUpdate(String projectId, String resourceId, MockDataDTO mockData) {
+//
+//        // Find the project
+//        ProjectDTO project = projectService.findOne(projectId).orElseThrow();
+//
+//        // Find the resource
+//        ResourceDTO resource = resourceService.findOne(resourceId).orElseThrow();
+//
+//        // Update the resource
+//        resource.setName(mockData.getName());
+//        resource.setProject(project);
+//
+//        Set<ResourceSchemaDTO> resourceSchemaDTOSet = new HashSet<>();
+//
+//        // Find and update the resource schemas
+//        ResourceDTO finalResource = resource;
+//        mockData.getResourceSchema().forEach(resourceSchemaDTO -> {
+//            resourceSchemaDTO.setResource(finalResource);
+//            ResourceSchemaDTO existingResourceSchema = resourceSchemaService
+//                .findOne(resourceSchemaDTO.getId()).orElseThrow();
+//            existingResourceSchema.updateFrom(resourceSchemaDTO);
+//            ResourceSchemaDTO resourceSchema = resourceSchemaService.save(existingResourceSchema);
+//            resourceSchemaDTOSet.add(resourceSchema);
+//        });
+//
+//        resource.setResourceSchemas(resourceSchemaDTOSet);
+//        resource = resourceService.save(resource);
+//
+//        return resource;
+//    }
+
 }
 
 

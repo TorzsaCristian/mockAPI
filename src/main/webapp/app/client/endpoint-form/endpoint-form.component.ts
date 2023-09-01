@@ -4,6 +4,7 @@ import { SelectItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { MockService } from '../mock.service';
 import { IResource } from 'app/entities/resource/resource.model';
+import FAKER_METHOD_OPTIONS from './fakerOptions';
 
 @Component({
   selector: 'jhi-endpoint-form',
@@ -31,13 +32,7 @@ export class EndpointFormComponent implements OnInit, OnDestroy, OnChanges {
   ];
 
 
-  fakerMethodOptions: SelectItem[] = [
-    { label: 'name.fullName', value: 'name.fullName' },
-    { label: 'address.city', value: 'address.city' },
-    { label: 'address.buildingNumber', value: 'address.buildingNumber' },
-    { label: 'commerce.productMaterial', value: 'commerce.productMaterial' },
-    { label: 'date.weekday', value: 'date.weekday' }
-  ];
+  fakerMethodOptions: SelectItem[] = FAKER_METHOD_OPTIONS;
 
   endpointForm: FormGroup;
 
@@ -89,10 +84,10 @@ export class EndpointFormComponent implements OnInit, OnDestroy, OnChanges {
 
   patchForm(): void {
 
-    this.resourceSchemaArray.push(this.fb.group({
-      name: 'id',
-      type: 'Object ID'
-    }));
+    // this.resourceSchemaArray.push(this.fb.group({
+    //   name: 'id',
+    //   type: 'Object ID'
+    // }));
     this.endpointForm.patchValue({
       name: this.resource?.name,
       generator: this.resource?.generator,
@@ -209,7 +204,7 @@ export class EndpointFormComponent implements OnInit, OnDestroy, OnChanges {
   submit(): void {
     if (!this.endpointForm.invalid) {
       console.warn(this.endpointForm.value);
-      this.mockService.sendData(this.projectId!, this.endpointForm.value).subscribe(
+      this.mockService.sendResourceSchemas(this.projectId!, this.endpointForm.value).subscribe(
         res => {
           console.warn(res);
           this.submitFormEvent.emit();

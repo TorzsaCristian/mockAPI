@@ -5,9 +5,17 @@ import java.util.List;
 import java.util.Set;
 
 public class MockDataDTO extends ResourceDTO {
-
+    private String resourceId;
     private Set<ResourceSchemaDTO> resourceSchema;
     private List<EndpointDTO> endpoints;
+
+    public void setResourceId(String resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public String getResourceId() {
+        return resourceId;
+    }
 
     public Set<ResourceSchemaDTO> getResourceSchema() {
         return resourceSchema;

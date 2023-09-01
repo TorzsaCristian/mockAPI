@@ -12,7 +12,7 @@
     <div formArrayName="resourceSchema">
       <div *ngFor="let schema of resourceSchemaArray.controls; let i = index" [formGroupName]="i">
         <!-- Schema section -->
-        <div class="SchemaRow" *ngIf="i > 0; else idSection">
+        <div class="SchemaRow" *ngIf="schema.get('type')?.value !== 'Object ID'; else idSection">
           <div class="Input">
             <input type="text" pInputText [style]="{ width: '100%' }" formControlName="name" placeholder="Field name" />
           </div>
@@ -34,6 +34,7 @@
               class="custom-dropdown"
               *ngIf="schema.get('type')?.value === 'Faker.js'"
               [style]="{ width: '100%' }"
+              [filter]="true"
               [options]="fakerMethodOptions"
               formControlName="fakerMethod"
               placeholder="Select a faker method"

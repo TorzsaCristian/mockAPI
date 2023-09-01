@@ -12,9 +12,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ProjectDetailsComponent } from 'app/client/project-details/project-details.component';
 import { ResourceListItemComponent } from 'app/client/resource-list-item/resource-list-item.component';
+import { GeneratedDataViewComponent } from 'app/client/generated-data-view/generated-data-view.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule, FormsModule, InputTextareaModule, ReactiveFormsModule, FooterComponent, PageRibbonComponent, FormatMediumDatePipe],
-  declarations: [MainComponent, ProjectListComponent, EndpointFormComponent, ProjectDetailsComponent, ResourceListItemComponent],
+  declarations: [MainComponent, ProjectListComponent, EndpointFormComponent, ProjectDetailsComponent, ResourceListItemComponent, GeneratedDataViewComponent],
 })
 export default class MainModule { }
