@@ -20,6 +20,7 @@ export class ProjectDetailsComponent implements OnInit {
   dataViewVisible = false;
 
   dialogResource: IResource | null = null;
+  dialogResourceMockData: string | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute, private resourceService: ResourceService, private mockDataService: MockService, private changeDetector: ChangeDetectorRef) { }
 
@@ -40,17 +41,16 @@ export class ProjectDetailsComponent implements OnInit {
 
   openDialog(resource: IResource | undefined = undefined): void {
     if (resource) {
-      console.warn("View resource: " + resource.id);
       this.dialogResource = resource;
-      // this.changeDetector.detectChanges();
     }
 
     this.visible = true;
   }
 
-  openDataViewDialog(resource: IResource | undefined = undefined): void {
+  openDataViewDialog(resource: IResource | null = null): void {
     this.dataViewVisible = true;
-    this.generateData(resource!);
+    this.dialogResource = resource;
+    this.getMockData(resource!);
     console.warn(resource);
   }
 
@@ -58,6 +58,7 @@ export class ProjectDetailsComponent implements OnInit {
     this.visible = false;
     this.dataViewVisible = false;
     this.dialogResource = null;
+    this.dialogResourceMockData = null;
   }
 
   handleSubmitForm(): void {
@@ -65,10 +66,30 @@ export class ProjectDetailsComponent implements OnInit {
     this.getResources();
   }
 
-  generateData(resource: IResource): void {
-    this.mockDataService.generateData(resource).subscribe((res: any) => {
+  getMockData(resource: IResource): void {
+    this.mockDataService.getMockData(resource.id).subscribe((res: any) => {
+      this.dialogResourceMockData = JSON.stringify(res.body, null, 4);
+    });
+  }
+
+  generateMockData(resource: IResource, count: number): void {
+    this.mockDataService.generateMockData(resource.id, count).subscribe((res: any) => {
       console.warn(res);
-      // this.getResources();
+      // this.dialogResourceMockData = JSON.stringify(res.body, null, 4);
+    });
+  }
+
+  handleDeleteResource(resource: IResource): void {
+    this.resourceService.delete(resource.id).subscribe((res) => {
+      this.getResources();
+    });
+  }
+
+  handleUpdateMockData(resource: IResource, mockData: string): void {
+    this.mockDataService.updateMockData(resource.id, mockData).subscribe((res) => {
+      // this.getMockData(resource);
+      console.warn(res);
+      this.handleOnHide();
     });
   }
 

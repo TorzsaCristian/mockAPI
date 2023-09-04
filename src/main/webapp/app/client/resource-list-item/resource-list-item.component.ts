@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IResource } from 'app/entities/resource/resource.model';
 
 @Component({
   selector: 'jhi-resource-list-item',
@@ -8,11 +7,17 @@ import { IResource } from 'app/entities/resource/resource.model';
 })
 export class ResourceListItemComponent {
 
-  @Input() resource: IResource | null = null;
+  @Input() name!: string;
+  @Input() count!: number;
 
-  @Output() generateResouceEvent = new EventEmitter();
+  @Output() getMockData = new EventEmitter();
+  @Output() generateMockDataEvent = new EventEmitter<number>();
   @Output() editResourceEvent = new EventEmitter();
   @Output() deleteResourceEvent = new EventEmitter();
+
+  onCountChange(count: number | undefined): void {
+    count ? this.generateMockDataEvent.emit(count) : null;
+  }
 
 
 }

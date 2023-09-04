@@ -1,12 +1,10 @@
-<div class="flex p-1 gap-1 justify-content-start align-content-center" *ngIf="resource">
-  <span class="flex flex-wrap align-content-center" style="min-width: 100px; font-weight: bold; color: darkslategrey">{{
-    resource.name
-  }}</span>
+<div class="flex p-1 gap-1 justify-content-start align-content-center">
+  <span class="flex flex-wrap align-content-center" style="min-width: 100px; font-weight: bold; color: darkslategrey">{{ name }}</span>
 
   <p-button
     styleClass="p-button-sm p-button-raised p-button-text p-button-secondary"
     label="Data"
-    (onClick)="generateResouceEvent.emit()"
+    (onClick)="getMockData.emit()"
   ></p-button>
   <p-button
     styleClass="p-button-sm p-button-raised p-button-text p-button-primary"
@@ -19,8 +17,8 @@
     (onClick)="deleteResourceEvent.emit()"
   ></p-button>
 
-  <div style="min-width: 100px; padding-left: 1rem">
-    <label> Items: {{ resource.count }} </label>
-    <p-slider [(ngModel)]="resource.count"></p-slider>
+  <div class="flex flex-column justify-content-between" style="min-width: 100px; padding-left: 1rem">
+    <label> Items: {{ count }} </label>
+    <p-slider [(ngModel)]="count" (onSlideEnd)="onCountChange($event.value)"></p-slider>
   </div>
 </div>

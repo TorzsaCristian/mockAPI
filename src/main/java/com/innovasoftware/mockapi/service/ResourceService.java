@@ -102,7 +102,7 @@ public class ResourceService {
      * @return the entity.
      */
     public Optional<ResourceDTO> findOne(String id) {
-        log.debug("++++++Request to get Resource : {}", id);
+        log.debug("Request to get Resource : {}", id);
         Resource resource = resourceRepository.findById(id).orElse(null);
         log.debug(resource.getResourceSchemas().toString());
         return resourceRepository.findById(id).map(resourceMapper::toDto);

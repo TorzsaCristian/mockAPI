@@ -13,4 +13,6 @@ import java.util.Set;
 @Repository
 public interface ResourceSchemaRepository extends MongoRepository<ResourceSchema, String> {
     Set<ResourceSchema> findAllByResourceId(String resourceId);
+
+    void deleteAllByResourceId(String resourceId);
 }

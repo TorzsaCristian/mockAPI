@@ -85,16 +85,22 @@
 
     <dependencies>
 
+<!--        <dependency>-->
+<!--            <groupId>com.github.javafaker</groupId>-->
+<!--            <artifactId>javafaker</artifactId>-->
+<!--            <version>1.0.2</version>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.yaml</groupId>-->
+<!--                    <artifactId>snakeyaml</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
+
         <dependency>
-            <groupId>com.github.javafaker</groupId>
-            <artifactId>javafaker</artifactId>
-            <version>1.0.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>net.datafaker</groupId>
+            <artifactId>datafaker</artifactId>
+            <version>2.0.1</version>
         </dependency>
 
         <dependency>

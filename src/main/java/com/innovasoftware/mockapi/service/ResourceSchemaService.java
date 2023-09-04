@@ -105,4 +105,9 @@ public class ResourceSchemaService {
         log.debug("Request to delete ResourceSchema : {}", id);
         resourceSchemaRepository.deleteById(id);
     }
+
+    public void deleteByResourceId(String resourceId) {
+        log.debug("Request to delete ResourceSchema by projectId : {}", resourceId);
+        resourceSchemaRepository.deleteAllByResourceId(resourceId);
+    }
 }

@@ -1,21 +1,20 @@
 <div *ngIf="project">
   <div class="flex justify-content-between">
     <h2>{{ project.name }}</h2>
-    <p-button styleClass="p-button-sm" label="Add resource" (onClick)="openDialog()"></p-button>
+    <p-button styleClass="p-button-sm p-button-raised p-button-text" label="Add resource" (onClick)="openDialog()"></p-button>
   </div>
   <hr />
 
   <div *ngIf="resources">
-    <!-- <p>Resources:</p> -->
-
     <ul style="list-style-type: none; padding: 5px; margin: 5px">
       <li *ngFor="let resource of resources" style="padding: 5px">
-        <!-- <p-button styleClass="p-button-sm" label="{{ resource.name }}" (onClick)="openDialog(resource)"></p-button> -->
         <jhi-resource-list-item
-          [resource]="resource"
-          (generateResouceEvent)="openDataViewDialog(resource)"
+          [name]="resource.name!"
+          [count]="resource.count!"
+          (generateMockDataEvent)="generateMockData(resource, $event)"
+          (getMockData)="openDataViewDialog(resource)"
           (editResourceEvent)="openDialog(resource)"
-          (deleteResourceEvent)="(undefined)"
+          (deleteResourceEvent)="handleDeleteResource(resource)"
         >
         </jhi-resource-list-item>
       </li>
@@ -25,7 +24,7 @@
 
 <p-dialog
   *ngIf="project"
-  header="Header"
+  header="Create/Edit new resource"
   [dismissableMask]="true"
   [modal]="true"
   [(visible)]="visible"
@@ -37,12 +36,16 @@
 
 <p-dialog
   *ngIf="project"
-  header="Header"
+  header="View/Edit mock data"
   [dismissableMask]="true"
   [modal]="true"
   [(visible)]="dataViewVisible"
-  [style]="{ width: '70vw' }"
+  [style]="{ width: '50vw', 'min-height': '70vh' }"
   (onHide)="handleOnHide()"
 >
-  <jhi-generated-data-view></jhi-generated-data-view>
+  <jhi-generated-data-view
+    [data]="dialogResourceMockData"
+    (closeDialogEvent)="dataViewVisible = false"
+    (updateMockDataEvent)="handleUpdateMockData(dialogResource!, $event)"
+  ></jhi-generated-data-view>
 </p-dialog>

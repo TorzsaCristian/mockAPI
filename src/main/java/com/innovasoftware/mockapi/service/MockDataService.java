@@ -1,136 +1,113 @@
 package com.innovasoftware.mockapi.service;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.innovasoftware.mockapi.domain.MockData;
+import com.innovasoftware.mockapi.repository.MockDataRepository;
 import com.innovasoftware.mockapi.service.dto.MockDataDTO;
-import com.innovasoftware.mockapi.service.dto.ResourceDTO;
+import com.innovasoftware.mockapi.service.mapper.MockDataMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.github.javafaker.Faker;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.Optional;
 
+/**
+ * Service Implementation for managing {@link MockData}.
+ */
 @Service
 public class MockDataService {
 
+    private final Logger log = LoggerFactory.getLogger(MockDataService.class);
 
-    Faker faker = new Faker();
+    private final MockDataRepository mockDataRepository;
 
+    private final MockDataMapper mockDataMapper;
 
-    private final Logger log = LoggerFactory.getLogger(MockService.class);
-
-
-    public void generateMockData(MockDataDTO mockData){
-        log.debug("Request to generate mock data");
-
-        mockData.getResourceSchema().forEach(resourceSchema -> {
-            log.info("Resource schema: {}", resourceSchema);
-
-            if(resourceSchema.getType().equals("Faker.js")){
-                String[] splitMethod = resourceSchema.getFakerMethod().split("\\.");
-                if(splitMethod.length > 1){
-//                    Object subFaker = getSubFaker(faker, splitMethod[0]);
-//                    if(subFaker != null){
-//                        Object randomData= getFakeData(subFaker, splitMethod[1]);
-//                        log.info("Random data: name:{}  data:{}", resourceSchema.getName() ,randomData);
-//                    }
-                    String randomData = generateData(faker, splitMethod[0], splitMethod[1]);
-                    log.info("Random data name:{}  data:{}", resourceSchema.getName() ,randomData);
-                }
-            }
-        });
-
-
-//        // Iterate over your resource schema
-//        for (Map.Entry<String, String> entry : resourceSchema.entrySet()) {
-//            String type = entry.getKey();
-//            String methodName = entry.getValue();
-//
-//            String[] splitMethod = methodName.split("\\.");
-//            if(splitMethod.length > 1){
-//                Object subFaker = getSubFaker(faker, splitMethod[0]);
-//                if(subFaker != null){
-//                    Object randomData= getFakeData(subFaker, splitMethod[1]);
-//                    System.out.println(type + ": " + randomData);
-//                }
-//            }
-//        }
-
-
+    public MockDataService(MockDataRepository mockDataRepository, MockDataMapper mockDataMapper) {
+        this.mockDataRepository = mockDataRepository;
+        this.mockDataMapper = mockDataMapper;
     }
 
-
-    public String generateMockData(ResourceDTO resource){
-        log.debug("Request to generate mock data");
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonArray jsonArray = new JsonArray();
-
-
-
-        for(int i = 0; i < 10; i++) {
-            JsonObject jsonObject = new JsonObject();
-            resource.getResourceSchemas().forEach(resourceSchema -> {
-                log.info("Resource schema: {}", resourceSchema);
-                if (resourceSchema.getType().equals("Faker.js")) {
-                    String[] splitMethod = resourceSchema.getFakerMethod().split("\\.");
-                    if (splitMethod.length > 1) {
-//                        Faker fkr = new Faker();
-                        String randomData = generateData(faker, splitMethod[0], splitMethod[1]);
-                        log.info("Random data name:{}  data:{}", resourceSchema.getName(), randomData);
-                        jsonObject.addProperty(resourceSchema.getName(), randomData);
-                    }
-                }
-            });
-            jsonArray.add(jsonObject);
-        }
-
-//        JsonObject result = new JsonObject();
-//        result.add("items", jsonArray);
-
-
-        return gson.toJson(jsonArray);
-
+    /**
+     * Save a mock.
+     *
+     * @param mockDataDTO the entity to save.
+     * @return the persisted entity.
+     */
+    public MockDataDTO save(MockDataDTO mockDataDTO) {
+        log.debug("Request to save Mock : {}", mockDataDTO);
+        MockData mockData = mockDataMapper.toEntity(mockDataDTO);
+        mockData = mockDataRepository.save(mockData);
+        return mockDataMapper.toDto(mockData);
     }
 
-
-
-    private static Object getSubFaker(Faker faker, String fieldName) {
-        try {
-            return faker.getClass().getDeclaredField(fieldName).get(faker);
-        } catch (IllegalAccessException | NoSuchFieldException e) {
-            throw new IllegalStateException("No such field: " + fieldName,e);
-        }
+    /**
+     * Update a mock.
+     *
+     * @param mockDataDTO the entity to save.
+     * @return the persisted entity.
+     */
+    public MockDataDTO update(MockDataDTO mockDataDTO) {
+        log.debug("Request to update Mock : {}", mockDataDTO);
+        MockData mockData = mockDataMapper.toEntity(mockDataDTO);
+        mockData = mockDataRepository.save(mockData);
+        return mockDataMapper.toDto(mockData);
     }
 
-    private static Object getFakeData(Object subFaker, String methodName) {
-        try {
-            Method method = subFaker.getClass().getMethod(methodName);
-            return method.invoke(subFaker);
-        } catch (Exception e) {
-            throw new IllegalStateException("Could not invoke method: " + methodName,e);
-        }
+    /**
+     * Partially update a mockData.
+     *
+     * @param mockDataDTO the entity to update partially.
+     * @return the persisted entity.
+     */
+    public Optional<MockDataDTO> partialUpdate(MockDataDTO mockDataDTO) {
+        log.debug("Request to partially update Mock : {}", mockDataDTO);
+
+        return mockDataRepository
+            .findById(mockDataDTO.getId())
+            .map(existingMock -> {
+                mockDataMapper.partialUpdate(existingMock, mockDataDTO);
+
+                return existingMock;
+            })
+            .map(mockDataRepository::save)
+            .map(mockDataMapper::toDto);
     }
 
+    /**
+     * Get all the mockDatas.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    public Page<MockDataDTO> findAll(Pageable pageable) {
+        log.debug("Request to get all Mocks");
+        return mockDataRepository.findAll(pageable).map(mockDataMapper::toDto);
+    }
 
+    /**
+     * Get one mockData by id.
+     *
+     * @param id the id of the entity.
+     * @return the entity.
+     */
+    public Optional<MockDataDTO> findOne(String id) {
+        log.debug("Request to get mockDataDTO : {}", id);
+        return mockDataRepository.findById(id).map(mockDataMapper::toDto);
+    }
 
-    public static String generateData(Faker faker, String category, String methodName) {
-        try {
-            // get category field from Faker class
-            Object fieldObject = faker.getClass().getMethod(category).invoke(faker);
+    /**
+     * Delete the mockData by id.
+     *
+     * @param id the id of the entity.
+     */
+    public void delete(String id) {
+        log.debug("Request to delete MockData : {}", id);
+        mockDataRepository.deleteById(id);
+    }
 
-            // get method from fieldObjects class
-            Method method = fieldObject.getClass().getMethod(methodName);
-
-            // call method and return string
-            return (String) method.invoke(fieldObject);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            throw new IllegalStateException("Could not invoke method: " + methodName,e);
-        }
+    public Optional<MockDataDTO> findByResourceId(String resourceId) {
+        return mockDataRepository.findByResourceId(resourceId).map(mockDataMapper::toDto);
     }
 }

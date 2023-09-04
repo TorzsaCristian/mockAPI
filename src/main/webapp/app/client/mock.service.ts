@@ -39,8 +39,22 @@ export class MockService {
     return this.http.post<MockObject>(`${this.resourceUrl}/project/${projectId}`, serviceObject);
   }
 
-  generateData(resource: IResource): Observable<any[]> {
-    return this.http.post<any[]>(`${this.resourceUrl}/generate/${resource.id}`, { observe: 'response' });
+  getMockData(resourceId: string): Observable<HttpResponse<any[]>> {
+    return this.http.get<any[]>(`${this.resourceUrl}/${resourceId}`, { observe: 'response' });
   }
+
+  generateMockData(resourceId: string, count: number): Observable<HttpResponse<any[]>> {
+
+    // create a count object and sent it with post
+    const countObject = { count };
+
+    return this.http.post<any[]>(`${this.resourceUrl}/resource/${resourceId}/generate`, countObject, { observe: 'response' });
+  }
+
+  updateMockData(resourceId: string, mockData: string): Observable<HttpResponse<string>> {
+    return this.http.put<string>(`${this.resourceUrl}/${resourceId}`, mockData, { observe: 'response' });
+  }
+
+
 
 }

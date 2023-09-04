@@ -1,43 +1,75 @@
 package com.innovasoftware.mockapi.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
-import java.util.Set;
+import java.io.Serializable;
+import java.util.Objects;
 
-public class MockDataDTO extends ResourceDTO {
-    private String resourceId;
-    private Set<ResourceSchemaDTO> resourceSchema;
-    private List<EndpointDTO> endpoints;
+/**
+ * A DTO for the {@link com.innovasoftware.mockapi.domain.Mock} entity.
+ */
+@SuppressWarnings("common-java:DuplicatedBlocks")
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class MockDataDTO implements Serializable {
 
-    public void setResourceId(String resourceId) {
-        this.resourceId = resourceId;
+    private String id;
+
+    private String data;
+
+    private ResourceDTO resourceDTO;
+
+    public String getId() {
+        return id;
     }
 
-    public String getResourceId() {
-        return resourceId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Set<ResourceSchemaDTO> getResourceSchema() {
-        return resourceSchema;
+
+    public String getData() {
+        return data;
     }
 
-    public void setResourceSchema(Set<ResourceSchemaDTO> resourceSchema) {
-        this.resourceSchema = resourceSchema;
+    public void setData(String data) {
+        this.data = data;
     }
 
-    public List<EndpointDTO> getEndpoints() {
-        return endpoints;
+    public ResourceDTO getResource() {
+        return resourceDTO;
     }
 
-    public void setEndpoints(List<EndpointDTO> endpoints) {
-        this.endpoints = endpoints;
+    public void setResource(ResourceDTO resourceDTO) {
+        this.resourceDTO = resourceDTO;
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof MockDataDTO)) {
+            return false;
+        }
+
+        MockDataDTO mockDTO = (MockDataDTO) o;
+        if (this.id == null) {
+            return false;
+        }
+        return Objects.equals(this.id, mockDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
+    }
+
+    // prettier-ignore
+    @Override
     public String toString() {
-        return "MockDataDTO{" +
-            "resourceSchema=" + resourceSchema +
-            ", endpoints=" + endpoints +
-            '}';
+        return "MockDTO{" +
+            "id='" + getId() + "'" +
+            ", resource='" + getResource()+ "'" +
+            "}";
     }
 }

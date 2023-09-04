@@ -1,1 +1,13 @@
-<p>generated-data-view works!</p>
+<p>Edit/replace data for the resource. Data must be an array and a valid JSON.</p>
+
+<textarea style="width: 100%; height: 100%; font-size: small" rows="25" cols="50" pInputTextarea [(ngModel)]="data"></textarea>
+
+<div class="flex justify-content-between">
+  <p-button
+    type="submit"
+    (click)="closeDialogEvent.emit()"
+    label="Cancel"
+    styleClass="p-button-sm p-button-raised p-button-text p-button-info"
+  ></p-button>
+  <p-button type="submit" (click)="submitUpdate()" label="Update" styleClass="p-button-sm p-button-raised p-button-primary"></p-button>
+</div>

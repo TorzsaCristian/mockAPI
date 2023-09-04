@@ -40,6 +40,7 @@ export class EndpointFormComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(private mockService: MockService, private fb: FormBuilder, private changeDetector: ChangeDetectorRef) {
     this.endpointForm = this.fb.group({
+      id: [],
       name: ['', Validators.required],
       generator: [''],
       resourceSchema: this.fb.array([]),
@@ -83,12 +84,8 @@ export class EndpointFormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   patchForm(): void {
-
-    // this.resourceSchemaArray.push(this.fb.group({
-    //   name: 'id',
-    //   type: 'Object ID'
-    // }));
     this.endpointForm.patchValue({
+      id: this.resource?.id,
       name: this.resource?.name,
       generator: this.resource?.generator,
     });

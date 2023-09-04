@@ -1,14 +1,9 @@
 package com.innovasoftware.mockapi.web.rest;
 
-import com.github.javafaker.Faker;
-import com.innovasoftware.mockapi.service.MockDataService;
-import com.innovasoftware.mockapi.service.ProjectService;
-import com.innovasoftware.mockapi.service.ResourceSchemaService;
-import com.innovasoftware.mockapi.service.ResourceService;
-import com.innovasoftware.mockapi.service.dto.MockDataDTO;
-import com.innovasoftware.mockapi.service.dto.ProjectDTO;
-import com.innovasoftware.mockapi.service.dto.ResourceDTO;
-import com.innovasoftware.mockapi.service.dto.ResourceSchemaDTO;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import com.innovasoftware.mockapi.service.*;
+import com.innovasoftware.mockapi.service.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +20,10 @@ public class MockDataResource {
 
     private final Logger log = LoggerFactory.getLogger(MockResource.class);
 
-    private final MockDataService mockDataService;
+    private final MockDataGeneratorService mockDataGeneratorService;
 
-
-    private final Faker faker = new Faker();
+    @Autowired
+    MockDataService mockDataService;
 
     @Autowired
     ResourceService resourceService;
@@ -39,44 +34,83 @@ public class MockDataResource {
     @Autowired
     ProjectService projectService;
 
-    public MockDataResource(MockDataService mockDataService) {
-        this.mockDataService = mockDataService;
+    public MockDataResource(MockDataGeneratorService mockDataGeneratorService) {
+        this.mockDataGeneratorService = mockDataGeneratorService;
     }
 
     @PostMapping("/mock-data/project/{projectId}")
     public ResponseEntity<ResourceDTO> createMock(@PathVariable(value = "projectId", required = false) final String projectId,
-                                                  @RequestBody MockDataDTO mockData) throws URISyntaxException {
-        log.info("REST request to create MockData : {}", mockData);
+                                                  @RequestBody ResourcePayloadDTO resourcePayloadDTO) throws URISyntaxException {
+        log.info("REST request to create resourcePayloadDTO : {}", resourcePayloadDTO);
 
-        ResourceDTO resource = this.handleCreate(projectId, mockData);
+        ResourceDTO resource = this.handleSave(projectId, resourcePayloadDTO);
 
-        // handle update???
-
+        MockDataDTO mockData = mockDataService.findByResourceId(resource.getId()).orElse(new MockDataDTO());
+        mockData.setResource(resource);
+        mockData.setData(mockDataGeneratorService.generateMockData(resource));
+        mockDataService.save(mockData);
 
 
         return ResponseEntity
             .ok(resource);
     }
 
-    @PostMapping("/mock-data/generate/{resourceId}")
-    public ResponseEntity<String> createMock(@PathVariable(value = "resourceId", required = true) final String resourceId){
-
+    @PostMapping("/mock-data/resource/{resourceId}/generate")
+    public ResponseEntity<CountDTO> generateMockData(
+        @PathVariable(value = "resourceId") final String resourceId,
+        @RequestBody CountDTO count) {
+        log.info("REST request to generate mock data for resource : {} with count : {}", resourceId, count.getCount());
 
         ResourceDTO resource = resourceService.findOne(resourceId).orElseThrow();
+        resource.setCount(count.getCount());
+        resource = resourceService.save(resource);
 
-       return  ResponseEntity.ok(mockDataService.generateMockData(resource));
+        MockDataDTO mockData = mockDataService.findByResourceId(resourceId).orElse(new MockDataDTO());
+        mockData.setResource(resource);
+        mockData.setData(mockDataGeneratorService.generateMockData(resource));
+        mockDataService.save(mockData);
+
+        return ResponseEntity
+            .ok(count);
+    }
+
+    @GetMapping("/mock-data/{resourceId}")
+    public ResponseEntity<String> createMock(@PathVariable(value = "resourceId") final String resourceId) {
+        MockDataDTO mockData = mockDataService.findByResourceId(resourceId).orElseThrow();
+        return ResponseEntity.ok(mockData.getData());
+    }
+
+    @PutMapping("/mock-data/{resourceId}")
+    public ResponseEntity<String> updateMockData(@PathVariable(value = "resourceId") final String resourceId, @RequestBody String mockDataJSON) {
+        if(!isValidJson(mockDataJSON)){
+            return ResponseEntity.badRequest().body("Invalid JSON");
+        }
+        ResourceDTO resource = resourceService.findOne(resourceId).orElseThrow();
+
+        MockDataDTO mockData = mockDataService.findByResourceId(resourceId).orElseThrow();
+        mockData.setData(mockDataJSON);
+        mockData.setResource(resource);
+        mockData = mockDataService.save(mockData);
+        return ResponseEntity.ok(mockData.getData());
     }
 
 
-    private ResourceDTO handleCreate(String projectId, MockDataDTO mockData) {
+    private ResourceDTO handleSave(String projectId, ResourcePayloadDTO mockData) {
 
         ProjectDTO project = projectService.findOne(projectId).orElseThrow();
 
-
-        ResourceDTO resource = new ResourceDTO();
-        resource.setName(mockData.getName());
-        resource.setProject(project);
-        resource = resourceService.save(resource);
+        ResourceDTO resource;
+        if (mockData.getId() == null) {
+            resource = new ResourceDTO();
+            resource.setName(mockData.getName());
+            resource.setProject(project);
+            resource.setCount(0);
+            resource = resourceService.save(resource);
+        } else {
+            resource = resourceService.findOne(mockData.getId()).orElse(new ResourceDTO());
+            resource.setResourceSchemas(new HashSet<>());
+            resourceSchemaService.deleteByResourceId(resource.getId());
+        }
 
         Set<ResourceSchemaDTO> resourceSchemaDTOSet = new HashSet<>();
 
@@ -88,43 +122,19 @@ public class MockDataResource {
         });
 
         resource.setResourceSchemas(resourceSchemaDTOSet);
-        resource.setCount(0);
         resource = resourceService.save(resource);
 
         return resource;
     }
 
-//    private ResourceDTO handleUpdate(String projectId, String resourceId, MockDataDTO mockData) {
-//
-//        // Find the project
-//        ProjectDTO project = projectService.findOne(projectId).orElseThrow();
-//
-//        // Find the resource
-//        ResourceDTO resource = resourceService.findOne(resourceId).orElseThrow();
-//
-//        // Update the resource
-//        resource.setName(mockData.getName());
-//        resource.setProject(project);
-//
-//        Set<ResourceSchemaDTO> resourceSchemaDTOSet = new HashSet<>();
-//
-//        // Find and update the resource schemas
-//        ResourceDTO finalResource = resource;
-//        mockData.getResourceSchema().forEach(resourceSchemaDTO -> {
-//            resourceSchemaDTO.setResource(finalResource);
-//            ResourceSchemaDTO existingResourceSchema = resourceSchemaService
-//                .findOne(resourceSchemaDTO.getId()).orElseThrow();
-//            existingResourceSchema.updateFrom(resourceSchemaDTO);
-//            ResourceSchemaDTO resourceSchema = resourceSchemaService.save(existingResourceSchema);
-//            resourceSchemaDTOSet.add(resourceSchema);
-//        });
-//
-//        resource.setResourceSchemas(resourceSchemaDTOSet);
-//        resource = resourceService.save(resource);
-//
-//        return resource;
-//    }
-
+    public static boolean isValidJson(String jsonInString) {
+        try {
+            JsonParser.parseString(jsonInString);
+            return true;
+        } catch (JsonSyntaxException ex) {
+            return false;
+        }
+    }
 }
 
 
